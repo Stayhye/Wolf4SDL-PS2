@@ -1,4 +1,13 @@
 // WL_MAIN.C
+#include <sifrpc.h>
+#include <libpad.h>
+
+// Inside main
+SifInitRpc(0);
+// This clears any stuck drivers from previous failed boots
+while(!SifIopReset(NULL, 0));
+while(!SifIopSync());
+SifInitRpc(0);
 
 #ifdef _WIN32
     #include <io.h>
