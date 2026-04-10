@@ -13,6 +13,29 @@ loaded into the data segment
 
 =============================================================================
 */
+#include <ctype.h>
+#include <string.h>
+#include <stdio.h>
+
+FILE* fopen_nocase(const char* filename, const char* mode) {
+    FILE* f = fopen(filename, mode);
+    if (f) return f;
+
+    char temp[256];
+    strncpy(temp, filename, 255);
+
+    // Try All Lowercase
+    for(int i = 0; temp[i]; i++) temp[i] = tolower(temp[i]);
+    f = fopen(temp, mode);
+    if (f) return f;
+
+    // Try All Uppercase
+    for(int i = 0; temp[i]; i++) temp[i] = toupper(temp[i]);
+    f = fopen(temp, mode);
+    if (f) return f;
+
+    return NULL; // Truly not found
+}
 
 #include <sys/types.h>
 #if defined _WIN32
